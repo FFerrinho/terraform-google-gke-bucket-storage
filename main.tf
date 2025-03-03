@@ -81,7 +81,7 @@ resource "kubernetes_persistent_volume" "main" {
     persistent_volume_source {
       csi {
         driver        = "gcsfuse.csi.storage.gke.io"
-        volume_handle = var.gke_cluster_name
+        volume_handle = var.bucket_name
         read_only     = var.k8s_pv_read_only
       }
     }
