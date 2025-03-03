@@ -10,8 +10,8 @@
 
 | Name | Version |
 |------|---------|
-| <a name="provider_google"></a> [google](#provider\_google) | ~> 6 |
-| <a name="provider_kubernetes"></a> [kubernetes](#provider\_kubernetes) | ~> 2 |
+| <a name="provider_google"></a> [google](#provider\_google) | 6.23.0 |
+| <a name="provider_kubernetes"></a> [kubernetes](#provider\_kubernetes) | 2.36.0 |
 
 ## Modules
 
@@ -33,19 +33,21 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_gke_cluster_name"></a> [gke\_cluster\_name](#input\_gke\_cluster\_name) | The name of the GKE Cluster. | `string` | n/a | yes |
-| <a name="input_gke_service_account"></a> [gke\_service\_account](#input\_gke\_service\_account) | The name of the GKE Service Account used by the nodes. Can be a custom or default service account. | `string` | n/a | yes |
-| <a name="input_k8s_namespace"></a> [k8s\_namespace](#input\_k8s\_namespace) | The name of the Kubernetes Namespace. | `string` | n/a | yes |
-| <a name="input_k8s_persistent_volume_name"></a> [k8s\_persistent\_volume\_name](#input\_k8s\_persistent\_volume\_name) | The name of the Kubernetes Persistent Volume. | `string` | n/a | yes |
-| <a name="input_k8s_pv_access_modes"></a> [k8s\_pv\_access\_modes](#input\_k8s\_pv\_access\_modes) | The access modes for the Persistent Volume. | `list(string)` | <pre>[<br>  "ReadWriteMany"<br>]</pre> | no |
-| <a name="input_k8s_pv_capacity"></a> [k8s\_pv\_capacity](#input\_k8s\_pv\_capacity) | The capacity for the Persistent Volume. | `string` | `"100Gi"` | no |
-| <a name="input_k8s_pv_claim_name"></a> [k8s\_pv\_claim\_name](#input\_k8s\_pv\_claim\_name) | The name of the Persistent Volume Claim. | `string` | n/a | yes |
-| <a name="input_k8s_pv_mount_options"></a> [k8s\_pv\_mount\_options](#input\_k8s\_pv\_mount\_options) | The mount options for the Persistent Volume. | `list(string)` | <pre>[<br>  "implicit-dirs",<br>  "uid=33",<br>  "gid=33"<br>]</pre> | no |
-| <a name="input_k8s_pv_read_only"></a> [k8s\_pv\_read\_only](#input\_k8s\_pv\_read\_only) | The read only status for the Persistent Volume. | `bool` | `false` | no |
-| <a name="input_k8s_service_account"></a> [k8s\_service\_account](#input\_k8s\_service\_account) | The name of the Kubernetes Service Account. | `string` | `"gcs-storage-sa"` | no |
-| <a name="input_k8s_storage_class"></a> [k8s\_storage\_class](#input\_k8s\_storage\_class) | The name of the Kubernetes Storage Class. | `string` | n/a | yes |
-| <a name="input_project_id"></a> [project\_id](#input\_project\_id) | The project ID. | `string` | n/a | yes |
-| <a name="input_k8s_storage_class_allow_storage_expansion"></a> [storage\_class\_allow\_storage\_expansion](#input\_storage\_class\_allow\_storage\_expansion) | Allow volume expansion. | `bool` | `true` | no |
+| <a name="input_bucket_name"></a> [bucket\_name](#input\_bucket\_name) | The name of the existing Google Cloud Storage Bucket to mount. | `string` | n/a | yes |
+| <a name="input_create_k8s_service_account"></a> [create\_k8s\_service\_account](#input\_create\_k8s\_service\_account) | Whether to create a new Kubernetes Service Account and bind it to the GCP Service Account. Set to false if you already have a service account configured with Workload Identity. | `bool` | `true` | no |
+| <a name="input_gke_cluster_name"></a> [gke\_cluster\_name](#input\_gke\_cluster\_name) | The name of the GKE Cluster where the GCS Fuse CSI driver is installed. | `string` | n/a | yes |
+| <a name="input_gke_service_account_email"></a> [gke\_service\_account\_email](#input\_gke\_service\_account\_email) | The email of the GCP Service Account used by GKE nodes. This can be either the default compute service account or a custom service account. | `string` | n/a | yes |
+| <a name="input_k8s_namespace"></a> [k8s\_namespace](#input\_k8s\_namespace) | The Kubernetes Namespace where the Service Account, PVC, and other resources will be created. | `string` | n/a | yes |
+| <a name="input_k8s_persistent_volume_name"></a> [k8s\_persistent\_volume\_name](#input\_k8s\_persistent\_volume\_name) | The name of the Kubernetes Persistent Volume that will be created to represent the GCS bucket. | `string` | n/a | yes |
+| <a name="input_k8s_pv_access_modes"></a> [k8s\_pv\_access\_modes](#input\_k8s\_pv\_access\_modes) | The access modes for the Persistent Volume. Default is ReadWriteMany to allow multiple pods to mount the same bucket. | `list(string)` | <pre>[<br>  "ReadWriteMany"<br>]</pre> | no |
+| <a name="input_k8s_pv_capacity"></a> [k8s\_pv\_capacity](#input\_k8s\_pv\_capacity) | The storage capacity to report for the Persistent Volume. This doesn't limit the actual GCS bucket size. | `string` | `"100Gi"` | no |
+| <a name="input_k8s_pv_claim_name"></a> [k8s\_pv\_claim\_name](#input\_k8s\_pv\_claim\_name) | The name of the Persistent Volume Claim that will be created to bind to the Persistent Volume. | `string` | n/a | yes |
+| <a name="input_k8s_pv_mount_options"></a> [k8s\_pv\_mount\_options](#input\_k8s\_pv\_mount\_options) | Mount options for the GCS Fuse CSI driver. Default includes implicit-dirs for better directory handling and uid/gid 33 for www-data user compatibility. | `list(string)` | <pre>[<br>  "implicit-dirs"<br>]</pre> | no |
+| <a name="input_k8s_pv_read_only"></a> [k8s\_pv\_read\_only](#input\_k8s\_pv\_read\_only) | Whether to mount the GCS bucket as read-only in the Persistent Volume. | `bool` | `false` | no |
+| <a name="input_k8s_service_account_name"></a> [k8s\_service\_account\_name](#input\_k8s\_service\_account\_name) | The name of the Kubernetes Service Account that will be used to access the GCS bucket through Workload Identity. | `string` | n/a | yes |
+| <a name="input_k8s_storage_class"></a> [k8s\_storage\_class](#input\_k8s\_storage\_class) | The name of the Kubernetes Storage Class that will be created for the GCS Fuse CSI driver. | `string` | n/a | yes |
+| <a name="input_k8s_storage_class_allow_storage_expansion"></a> [k8s\_storage\_class\_allow\_storage\_expansion](#input\_k8s\_storage\_class\_allow\_storage\_expansion) | Whether to allow volume expansion in the Storage Class. This enables dynamic resizing of persistent volumes. | `bool` | `true` | no |
+| <a name="input_project_id"></a> [project\_id](#input\_project\_id) | The Google Cloud Project ID where resources will be created. | `string` | n/a | yes |
 
 ## Outputs
 
