@@ -32,7 +32,7 @@ locals {
 # Grant access to the storage bucket
 resource "google_storage_bucket_iam_member" "main" {
   for_each = toset(local.storage_bucket_members)
-  bucket   = module.gke_bsp_storage.name
+  bucket   = var.bucket_name
   role     = "roles/storage.objectAdmin"
   member   = each.key
 }

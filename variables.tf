@@ -13,6 +13,11 @@ variable "gke_cluster_name" {
   type        = string
 }
 
+variable "bucket_name" {
+  description = "The name of the Google Cloud Storage Bucket."
+  type        = string
+}
+
 variable "k8s_service_account" {
   description = "The name of the Kubernetes Service Account."
   type        = string
