@@ -3,7 +3,7 @@ variable "project_id" {
   type        = string
 }
 
-variable "gke_service_account_email" {
+variable "service_account_email" {
   description = "The email of the GCP Service Account used by GKE nodes. This can be either the default compute service account or a custom service account."
   type        = string
 }
@@ -48,6 +48,7 @@ variable "k8s_storage_class_allow_storage_expansion" {
 variable "k8s_persistent_volume_name" {
   description = "The name of the Kubernetes Persistent Volume that will be created to represent the GCS bucket."
   type        = string
+  default     = null
 }
 
 variable "k8s_pv_access_modes" {
@@ -71,6 +72,13 @@ variable "k8s_pv_read_only" {
 variable "k8s_pv_claim_name" {
   description = "The name of the Persistent Volume Claim that will be created to bind to the Persistent Volume."
   type        = string
+  default     = null
+}
+
+variable "k8s_pvc_capacity" {
+  description = "The size for the PV Claim. If not specified, the full size of the PersistentVolume is used."
+  type        = string
+  default     = null
 }
 
 variable "k8s_pv_mount_options" {
